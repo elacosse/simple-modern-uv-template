@@ -67,6 +67,20 @@ source .venv/bin/activate
 
 See [uv docs](https://docs.astral.sh/uv/) for details.
 
+## Pre-commit Hooks
+
+This project uses `pre-commit` to enforce code style and quality. To use it, you need to install the hooks once:
+
+```shell
+uv run pre-commit install
+```
+
+Now, the hooks will run automatically every time you make a commit. You can also run them manually:
+
+```shell
+uv run pre-commit run --all-files
+```
+
 ## IDE setup
 
 If you use VSCode or a fork like Cursor or Windsurf, you can install the following
