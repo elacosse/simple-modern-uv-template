@@ -1,17 +1,15 @@
-import argparse
-import os
+from typing import Annotated
 
+import typer
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
-def main():
-    parser = argparse.ArgumentParser(description="A simple CLI.")
-    parser.add_argument("--name", default=os.getenv("NAME", "World"), help="The name to greet.")
-    args = parser.parse_args()
-    print(f"Hello, {args.name}!")
-
+def main(name: Annotated[str, typer.Option(help="The name to greet.", envvar="NAME")] = "World"):
+    """
+    A simple CLI.
+    """
+    print(f"Hello, {name}!")
 
 if __name__ == "__main__":
-    main()
+    typer.run(main)
