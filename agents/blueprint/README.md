@@ -15,7 +15,7 @@ Use the steps **in order** unless you are explicitly resuming an in-progress wor
 - Do not change files unless the user explicitly requests it.
 - Prefer user-provided links/docs over conflicting web info.
 
-**Output:** Write findings to `RESEARCH.md`.  
+**Output:** Write findings to `RESEARCH.md`.
 If `RESEARCH.md` already exists, you must ask the user whether to overwrite, create a new `tasks/<name>/` directory, or create a VCS branch/workspace.
 
 **Next step:** `/blueprint:plan`
@@ -29,7 +29,7 @@ If `RESEARCH.md` already exists, you must ask the user whether to overwrite, cre
 - First locate and include `RESEARCH.md` (it may be under `tasks/<name>/`).
 - Ask clarifying questions and do not execute the plan.
 
-**Output:** Write the plan to `PLAN.md`.  
+**Output:** Write the plan to `PLAN.md`.
 If `PLAN.md` exists, you must ask the user whether to overwrite, create a new `tasks/<name>/` directory, or create a VCS branch/workspace.
 
 **Next step:** `/blueprint:define`
@@ -44,7 +44,7 @@ If `PLAN.md` exists, you must ask the user whether to overwrite, create a new `t
 - Write tasks as Markdown checkboxes, with indentation for parent/child tasks.
 - Tag tasks with categories (e.g. `[frontend]`, `[backend]`, `[test]`) and note parallelizable work.
 
-**Output:** Write the task list to `TODO.md`.  
+**Output:** Write the task list to `TODO.md`.
 If `TODO.md` exists, you must ask the user whether to overwrite, create a new `tasks/<name>/` directory, or create a VCS branch/workspace.
 
 **Next step:** `/blueprint:implement`
@@ -142,5 +142,5 @@ If `TODO.md` exists, you must ask the user whether to overwrite, create a new `t
 5. Verify: `/blueprint:test`
 6. Iterate (as needed): `/blueprint:refine <feedback>`
 
-If you’re not sure what’s next: `/blueprint:resume`  
+If you’re not sure what’s next: `/blueprint:resume`
 If you want to clean up generated workflow artifacts: `/blueprint:clear`

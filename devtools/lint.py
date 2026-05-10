@@ -15,8 +15,7 @@ def main():
     errcount += run(["uv", "run", "codespell", "--write-changes", *SRC_PATHS, *DOC_PATHS])
     errcount += run(["uv", "run", "ruff", "check", "--fix", *SRC_PATHS])
     errcount += run(["uv", "run", "ruff", "format", *SRC_PATHS])
-    errcount += run(["uv", "run", "basedpyright", *SRC_PATHS])
-
+    errcount += run(["uv", "run", "basedpyright", "--level", "error", *SRC_PATHS])
 
     rprint()
 

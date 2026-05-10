@@ -101,15 +101,15 @@ def calculate_user_subscription_renewal_date(
     billing_interval: BillingInterval
 ) -> datetime:
     """Calculate when a user's subscription will renew.
-    
+
     Args:
         user_id: Unique identifier for the user
         current_period_end: When the current billing period ends
         billing_interval: Monthly, yearly, etc.
-        
+
     Returns:
         The datetime when the next billing cycle starts
-        
+
     Raises:
         ValueError: If billing_interval is not supported
     """

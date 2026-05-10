@@ -3,13 +3,13 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-  workflow_dispatch: # Enable manual trigger.
+  workflow_dispatch:  # Enable manual trigger.
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write # Mandatory for OIDC.
+      id-token: write  # Mandatory for OIDC.
       contents: read
     steps:
       - name: Checkout (official GitHub action)
@@ -21,19 +21,19 @@ jobs:
       - name: Install uv (official Astral action)
         uses: astral-sh/setup-uv@v5
         with:
-          version: "0.6.5"
+          version: "0.9.18"
           enable-cache: true
-          python-version: "3.12"
+          cache-dependency-glob: "uv.lock"
 
       - name: Set up Python (using uv)
-        run: uv python install
+        run: uv python install 3.12
 
       - name: Install all dependencies
-        run: uv sync --all-extras --dev
+        run: uv sync --locked --all-extras --dev --python 3.12
 
       - name: Run tests
         run: uv run pytest
-        
+
       - name: Build package
         run: uv build
 
