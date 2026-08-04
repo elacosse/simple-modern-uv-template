@@ -1,12 +1,7 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: CI
 
 on:
   push:
-    # Use ["main", "master"] for CI only on the default branch.
-    # Use ["**"] for CI on all branches.
     branches: ["main", "master"]
   pull_request:
     branches: ["main", "master"]
@@ -15,69 +10,133 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-    strategy:
-      matrix:
-        # Update this as needed:
-        # Common platforms: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
-        python-version: ["3.11", "3.12", "3.13"]
-
-    # Linux only by default. Use ${{ matrix.os }} for other OSes.
-    runs-on: ${{ matrix.os }}
-
+  quality:
+    name: Quality and template smoke test
+    runs-on: ubuntu-latest
     steps:
-      # Generally following uv docs:
-      # https://docs.astral.sh/uv/guides/integration/github/
-
-      - name: Checkout (official GitHub action)
-        uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          # Important for versioning plugins:
           fetch-depth: 0
 
-      - name: Install uv (official Astral action)
-        uses: astral-sh/setup-uv@v5
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.9.18"
+          version: "0.12.1"
+          python-version: "3.14"
           enable-cache: true
-          cache-dependency-glob: "uv.lock"
 
-      - name: Set up Python (using uv)
-        run: uv python install ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: uv sync --locked --all-extras --dev
 
-      # Alternately can use the official Python action:
-      # - name: Set up Python (using actions/setup-python)
-      #   uses: actions/setup-python@v5
-      #   with:
-      #     python-version: ${{ matrix.python-version }}
+      - name: Run static checks
+        run: make lint
 
-      - name: Install all dependencies
-        run: uv sync --locked --all-extras --dev --python ${{ matrix.python-version }}
+      - name: Smoke-test a configured project
+        run: make template-test
 
-      - name: Show Python version
-        run: uv run python --version
+  audit:
+    name: Audit dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
 
-      - name: Run pre-commit
-        run: uv run pre-commit run --all-files --show-diff-on-failure
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          version: "0.12.1"
+          enable-cache: true
 
-      - name: Run linting
-        run: uv run python devtools/lint.py
+      - name: Audit locked dependencies
+        run: uv audit --frozen --preview-features audit-command
+
+  minimum-dependencies:
+    name: Python 3.11 with minimum direct dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          version: "0.12.1"
+          python-version: "3.11"
+          enable-cache: true
+
+      - name: Resolve minimum direct dependencies
+        run: uv lock --upgrade --resolution lowest-direct
+
+      - name: Install dependencies
+        run: uv sync --locked --all-extras --dev
 
       - name: Run tests
         run: uv run pytest
 
-      - name: Build package
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
-        run: uv build
+  tests:
+    name: Python ${{ matrix.python-version }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.12"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: ubuntu-latest
+            python-version: "3.14"
+          - os: macos-latest
+            python-version: "3.14"
+          - os: windows-latest
+            python-version: "3.14"
 
-      - name: Upload coverage to Codecov
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13' && env.CODECOV_TOKEN != ''
-        uses: codecov/codecov-action@v4
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
-          token: ${{ env.CODECOV_TOKEN }}
+          fetch-depth: 0
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          version: "0.12.1"
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked --all-extras --dev
+
+      - name: Run tests
+        run: uv run pytest
+
+      - name: Upload coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.14'
+        uses: codecov/codecov-action@0561704f0f02c16a585d4c7555e57fa2e44cf909  # v5.5.2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           slug: ${{ github.repository }}
           files: coverage.xml
+          fail_ci_if_error: false
+
+  build:
+    name: Build distributions
+    needs: [quality, audit, minimum-dependencies, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          version: "0.12.1"
+          python-version: "3.14"
+
+      - name: Build package
+        run: uv build

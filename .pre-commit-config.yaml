@@ -2,12 +2,16 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-toml
       - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: detect-private-key
   - repo: local
     hooks:
       - id: ruff
@@ -30,9 +34,9 @@ repos:
         entry: uv run yamllint --config-file .yamllint.yaml
         language: system
         types: [yaml]
-      - id: basedpyright
-        name: basedpyright
-        entry: uv run basedpyright
+      - id: ty
+        name: ty
+        entry: uv run ty check
         language: system
         types: [python]
-        args: ["--level", "error", "--skipunannotated"]
+        pass_filenames: false

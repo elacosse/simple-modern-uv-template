@@ -8,4 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Initial release of the project.
+
+- A one-command project configurator.
+- Python 3.14 support and a generated-project smoke test.
+- Dependabot updates for pinned GitHub Actions.
+- Dependency auditing and minimum-version test coverage in CI.
+
+### Changed
+
+- Split read-only checks from automatic formatting.
+- Replaced BasedPyright with Astral's ty type checker and language server.
+- Reduced duplicated CI work and isolated PyPI publishing credentials.
+- Restricted source distributions to package source and required metadata.
+- Made project configuration fail before changing files when template markers are missing.

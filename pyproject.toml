@@ -20,8 +20,7 @@ dynamic = ["version"]
 # Adjust as needed:
 classifiers = [
     # Adjust as needed:
-    "Development Status :: 4 - Beta",
-    # "Development Status :: 5 - Production/Stable",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
@@ -30,6 +29,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Typing :: Typed",
     # Include this to avoid accidentally publishing to PyPI:
     # "Private :: Do Not Upload",
@@ -52,9 +52,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.11.0",
     "codespell>=2.4.1",
-    "rich>=13.9.4",
-    "basedpyright>=1.28.2",
-    "funlog>=0.2.0",
+    "ty>=0.0.65",
     "yamllint>=1.36.2",
     "pre-commit>=3.7.1",
 ]
@@ -88,6 +86,11 @@ bump = true
 # The source location for the package.
 packages = ["src/changeme"]
 
+[tool.hatch.build.targets.sdist]
+# Keep machine-local settings and project tooling out of published archives.
+# Hatch always includes pyproject.toml, README.md, the license, and .gitignore.
+only-include = ["src"]
+
 
 # ---- Settings ----
 
@@ -114,8 +117,6 @@ select = [
 ]
 ignore = [
     "E501", # https://docs.astral.sh/ruff/rules/line-too-long/
-    "E402", # https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file/
-    "E731", # https://docs.astral.sh/ruff/rules/lambda-assignment/
     # We use both ruff formatter and linter so some rules should always be disabled.
     # See: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
     "W191", # https://docs.astral.sh/ruff/rules/tab-indentation/
@@ -133,25 +134,11 @@ ignore = [
     "ISC002", # https://docs.astral.sh/ruff/rules/multi-line-implicit-string-concatenation/
 ]
 
-# BasedPyright currently seems like the best type checker option, much faster
-# than mypy and with a good extension for VSCode/Cursor.
-# https://marketplace.visualstudio.com/items?itemName=detachhead.basedpyright
-# https://docs.basedpyright.com/latest/configuration/config-files/#sample-pyprojecttoml-file
-[tool.basedpyright]
-include = ["src", "tests", "devtools"]
-# Make ignoring type warnings easier:
-reportIgnoreCommentWithoutRule = false
-reportUnnecessaryTypeIgnoreComment = false
-# A few typically noisy warnings, comment/uncomment as desired:
-reportMissingTypeStubs = false
-reportUnusedCallResult = false
-# reportMissingImports = false
-# reportUnnecessaryIsInstance = false
-# reportUnreachable = false
-# reportAny = false
-# reportExplicitAny = false
-# reportUnknownVariableType = false
-# reportUnknownArgumentType = false
+# ty is Astral's fast type checker and language server.
+# https://docs.astral.sh/ty/
+[tool.ty.rules]
+# This is part of ty's recommended stricter configuration.
+missing-type-argument = "error"
 
 [tool.yamllint]
 # https://github.com/adrienverge/yamllint
@@ -162,13 +149,6 @@ max-line-length = 120
 # skip = "foo.py,bar.py"
 
 [tool.pytest.ini_options]
-python_files = ["*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-testpaths = [
-    "src",
-    "tests",
-]
-norecursedirs = []
-filterwarnings = []
-addopts = "--cov=src --cov-report=xml"
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--cov=changeme --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=100"

@@ -3,8 +3,6 @@ from typing import Annotated
 import typer
 from dotenv import load_dotenv
 
-load_dotenv()
-
 
 def main(name: Annotated[str, typer.Option(help="The name to greet.", envvar="NAME")] = "World") -> None:
     """
@@ -14,8 +12,9 @@ def main(name: Annotated[str, typer.Option(help="The name to greet.", envvar="NA
 
 
 def cli() -> None:
+    load_dotenv()
     typer.run(main)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover - exercised through the installed entry point
     cli()

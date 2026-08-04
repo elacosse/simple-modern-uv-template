@@ -22,9 +22,9 @@ For the purposes of this example replace OWNER and PROJECT with the right values
 2. **Pick a name for the project** that isn't already taken.
 
    - Go to `https://pypi.org/project/PROJECT` to see if another project with that name
-     already exits.
+     already exists.
 
-   - If needed, update your `pyproject.yml` with the correct name.
+   - If needed, update your `pyproject.toml` with the correct name.
 
 3. **Authorize** your repository to publish to PyPI:
 
@@ -34,7 +34,10 @@ For the purposes of this example replace OWNER and PROJECT with the right values
      "pending" trusted publisher
 
    - Enter the project name, repo owner, repo name, and `publish.yml` as the workflow
-     name. (You can leave the "environment name" field blank.)
+     name. Set the environment name to `pypi`.
+
+   - In the GitHub repository, create a `pypi` environment. For important packages,
+     add a required reviewer so publishing needs explicit approval.
 
 4. **Create a release** on GitHub:
 
@@ -52,7 +55,8 @@ For the purposes of this example replace OWNER and PROJECT with the right values
      Select to create a new tag, and pick a version.
      A good option is `v0.1.0`. (It's wise to have it start with a `v`.)
 
-   - Submit to create the release.
+   - Submit to create the release. The workflow verifies that the tag exactly matches
+     the version embedded in the built wheel before publishing it.
 
 5. **Confirm it publishes to PyPI**
 

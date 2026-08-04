@@ -19,9 +19,13 @@ def test_main_without_name(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_cli_with_name(capsys: pytest.CaptureFixture[str]) -> None:
-    with patch.object(sys, "argv", ["changeme", "--name", "Alice"]):
+    with (
+        patch("changeme.changeme.load_dotenv") as load_dotenv,
+        patch.object(sys, "argv", ["changeme", "--name", "Alice"]),
+    ):
         with pytest.raises(SystemExit) as exc_info:
             cli()
     captured = capsys.readouterr()
     assert exc_info.value.code == 0
+    load_dotenv.assert_called_once_with()
     assert "Hello, Alice!" in captured.out

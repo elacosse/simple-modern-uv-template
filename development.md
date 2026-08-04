@@ -13,8 +13,8 @@ fork will make it easier to contribute) and
 
 ## Basic Developer Workflows
 
-The `Makefile` simply offers shortcuts to `uv` commands for developer convenience.
-(For clarity, GitHub Actions don't use the Makefile and just call `uv` directly.)
+The `Makefile` offers shortcuts to `uv` commands for developer convenience. GitHub
+Actions use the same checks where practical.
 
 ```shell
 # First, install all dependencies and set up your virtual environment.
@@ -22,14 +22,20 @@ The `Makefile` simply offers shortcuts to `uv` commands for developer convenienc
 # including dev dependencies and optional dependencies.
 make install
 
-# Run uv sync, lint, and test:
-make
+# Install dependencies and Git hooks on a new checkout:
+make setup
+
+# Run all read-only checks and tests:
+make check
 
 # Build wheel:
 make build
 
-# Linting:
+# Read-only linting, formatting, spelling, typing, and YAML checks:
 make lint
+
+# Apply safe automatic fixes and formatting:
+make format
 
 # Run tests:
 make test
@@ -37,7 +43,7 @@ make test
 # Delete all the build artifacts:
 make clean
 
-# Upgrade dependencies to compatible versions:
+# Upgrade and install dependencies:
 make upgrade
 
 # To run tests by hand:
@@ -69,7 +75,7 @@ See [uv docs](https://docs.astral.sh/uv/) for details.
 
 ## Pre-commit Hooks
 
-This project uses `pre-commit` to enforce code style and quality. To use it, you need to install the hooks once:
+`make setup` installs the pre-commit hooks. To install only the hooks, run:
 
 ```shell
 uv run pre-commit install
@@ -88,15 +94,15 @@ extensions:
 
 - [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
 
-- [Based Pyright](https://marketplace.visualstudio.com/items?itemName=detachhead.basedpyright)
-  for type checking. Note that this extension works with non-Microsoft VSCode forks like
-  Cursor.
+- [ty](https://marketplace.visualstudio.com/items?itemName=astral-sh.ty) for fast type
+  checking and Python language-server features. The extension disables the Python
+  extension's language server by default to avoid running two language servers.
 
 ## Documentation
 
 - [uv docs](https://docs.astral.sh/uv/)
 
-- [basedpyright docs](https://docs.basedpyright.com/latest/)
+- [ty docs](https://docs.astral.sh/ty/)
 
 * * *
 
