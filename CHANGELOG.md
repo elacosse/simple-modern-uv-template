@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python 3.14 support and a generated-project smoke test.
 - Dependabot updates for pinned GitHub Actions.
 - Dependency auditing and minimum-version test coverage in CI.
+- Pinned build backend dependencies and required uv 0.12.1 or newer.
+- An opt-in installer for individually selected Codex and Antigravity agent skills.
+- Matt Pocock's individually selectable agent skills in the installer catalog.
 
 ### Changed
 
@@ -21,3 +24,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reduced duplicated CI work and isolated PyPI publishing credentials.
 - Restricted source distributions to package source and required metadata.
 - Made project configuration fail before changing files when template markers are missing.
+- Disabled persisted GitHub checkout credentials in CI and release workflows.

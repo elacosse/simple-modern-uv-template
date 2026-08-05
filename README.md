@@ -49,6 +49,53 @@ This will output:
 Hello, Your Name!
 ```
 
+## Optional AI Agent Skills
+
+Install only the skills you want for this repository. The curated catalog includes
+[Blueprint](https://github.com/imbue-ai/blueprint) and [Addy Osmani's agent
+skills](https://github.com/addyosmani/agent-skills), plus [Matt Pocock's
+skills](https://github.com/mattpocock/skills). List the exact available names:
+
+```shell
+uv run python devtools/install_agent_skills.py --list
+```
+
+### Choosing Skills
+
+The catalog has 67 individually selectable skills. Start with the workflow you
+actually want; do not install several skills that solve the same problem just
+because they are available.
+
+| If you want to… | Consider these skills |
+| --- | --- |
+| Turn a vague idea into a plan | `blueprint` (guided questions), `blueprint-generate` (write the plan), `interview-me`, `idea-refine`, `spec-driven-development`, `grill-me`, `to-spec`, `to-tickets`, `wayfinder` |
+| Design boundaries, APIs, and domain language | `api-and-interface-design`, `codebase-design`, `design-an-interface`, `domain-modeling`, `ubiquitous-language` |
+| Implement carefully | `incremental-implementation`, `test-driven-development`, `source-driven-development`, `doubt-driven-development`, `implement`, `tdd` |
+| Debug, research, or prototype | `debugging-and-error-recovery`, `diagnosing-bugs`, `research`, `prototype`, `browser-testing-with-devtools` |
+| Review and improve code | `code-review-and-quality`, `code-review`, `code-simplification`, `security-and-hardening`, `performance-optimization` |
+| Build UI or production visibility | `frontend-ui-engineering`, `observability-and-instrumentation` |
+| Ship and maintain software | `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `shipping-and-launch`, `deprecation-and-migration`, `triage` |
+
+Some choices intentionally overlap: choose either `test-driven-development` or
+`tdd` as your default testing workflow, and either `code-review-and-quality` or
+`code-review` as your default review workflow. Install both only if you want to
+compare their approaches. `browser-testing-with-devtools` additionally requires
+the Chrome DevTools MCP server.
+
+Then install specific skills into this repository. For example:
+
+```shell
+uv run python devtools/install_agent_skills.py \
+  blueprint \
+  api-and-interface-design \
+  test-driven-development
+```
+
+Pass `--dry-run` to preview commands or `--remove` to remove selected skills. The
+installer always copies files into `.agents/skills/`, disables anonymous installer
+telemetry, and never installs skills unless you name them. Both Codex and Antigravity
+CLI (`agy`) discover that project-local directory.
+
 ## Project Docs
 
 For how to install uv and Python, see [installation.md](installation.md).

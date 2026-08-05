@@ -4,6 +4,9 @@ This project is set up to use [**uv**](https://docs.astral.sh/uv/), the new pack
 manager for Python. `uv` replaces traditional use of `pyenv`, `pipx`, `poetry`, `pip`,
 etc. This is a quick cheat sheet on that:
 
+This template requires uv 0.12.1 or newer. Upgrade an existing installation with
+`uv self update`.
+
 On macOS or Linux, if you don't have `uv` installed, a quick way to install it:
 
 ```shell
