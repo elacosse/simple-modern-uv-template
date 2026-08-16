@@ -60,6 +60,22 @@ skills](https://github.com/mattpocock/skills). List the exact available names:
 uv run python devtools/install_agent_skills.py --list
 ```
 
+You can also install a complete collection when it fits the project:
+
+```shell
+# Guided planning and plan generation (2 skills)
+uv run python devtools/install_agent_skills.py --bundle planning-with-blueprint
+
+# Addy's engineering-oriented collection (24 skills)
+uv run python devtools/install_agent_skills.py --bundle addy-engineering-skills
+
+# Matt Pocock's development workflow collection (41 skills)
+uv run python devtools/install_agent_skills.py --bundle mattpocock-workflows
+```
+
+`--bundle all` installs all 67 skills and requires `--yes` as an explicit
+confirmation. Use `--dry-run` first if you want to inspect the commands.
+
 ### Choosing Skills
 
 The catalog has 67 individually selectable skills. Start with the workflow you
@@ -91,10 +107,12 @@ uv run python devtools/install_agent_skills.py \
   test-driven-development
 ```
 
-Pass `--dry-run` to preview commands or `--remove` to remove selected skills. The
-installer always copies files into `.agents/skills/`, disables anonymous installer
-telemetry, and never installs skills unless you name them. Both Codex and Antigravity
-CLI (`agy`) discover that project-local directory.
+Pass `--dry-run` to preview commands or `--remove` to remove selected skills or
+bundles. By default, the installer copies selected skills for both Codex
+(`.agents/skills/`) and Claude Code (`.claude/skills/`). Use `--agent codex` or
+`--agent claude-code` to target just one. It disables anonymous installer telemetry
+and never installs skills unless you name them. Antigravity CLI (`agy`) also discovers
+the shared `.agents/skills/` directory.
 
 ## Project Docs
 

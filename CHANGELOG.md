@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Pinned build backend dependencies and required uv 0.12.1 or newer.
 - An opt-in installer for individually selected Codex and Antigravity agent skills.
 - Matt Pocock's individually selectable agent skills in the installer catalog.
+- Clearly named opt-in bundles for complete skill collections from each source.
+- Claude Code as a default target for selected project-local agent skills.
 
 ### Changed
 
