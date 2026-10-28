@@ -36,7 +36,7 @@ repos:
         types: [yaml]
       - id: ty
         name: ty
-        entry: uv run ty check
+        entry: uv check --locked
         language: system
         types: [python]
         pass_filenames: false

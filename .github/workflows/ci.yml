@@ -23,7 +23,7 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.12.1"
+          version: "0.12.3"
           python-version: "3.14"
           enable-cache: true
 
@@ -48,7 +48,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.12.1"
+          version: "0.12.3"
           enable-cache: true
 
       - name: Audit locked dependencies
@@ -66,7 +66,7 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.12.1"
+          version: "0.12.3"
           python-version: "3.11"
           enable-cache: true
 
@@ -109,7 +109,7 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.12.1"
+          version: "0.12.3"
           python-version: ${{ matrix.python-version }}
           enable-cache: true
 
@@ -118,15 +118,6 @@ jobs:
 
       - name: Run tests
         run: uv run pytest
-
-      - name: Upload coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.14'
-        uses: codecov/codecov-action@0561704f0f02c16a585d4c7555e57fa2e44cf909  # v5.5.2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          slug: ${{ github.repository }}
-          files: coverage.xml
-          fail_ci_if_error: false
 
   build:
     name: Build distributions
@@ -141,7 +132,7 @@ jobs:
       - name: Install uv and Python
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
         with:
-          version: "0.12.1"
+          version: "0.12.3"
           python-version: "3.14"
 
       - name: Build package

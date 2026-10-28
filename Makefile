@@ -6,8 +6,8 @@
 .PHONY: default setup install check lint format test template-test upgrade build clean
 
 PYTHON_PATHS := src tests devtools
-DOC_PATHS := README.md CHANGELOG.md development.md installation.md publishing.md
-YAML_PATHS := .github $(wildcard .copier-answers.yml) .yamllint.yaml
+DOC_PATHS := README.md agent-skills.md CHANGELOG.md development.md installation.md publishing.md
+YAML_PATHS := .github openspec $(wildcard .copier-answers.yml) .yamllint.yaml
 
 default: check
 
@@ -21,7 +21,7 @@ lint:
 	uv run codespell $(PYTHON_PATHS) $(DOC_PATHS)
 	uv run ruff check $(PYTHON_PATHS)
 	uv run ruff format --check $(PYTHON_PATHS)
-	uv run ty check
+	uv check --locked
 	uv run yamllint --config-file .yamllint.yaml $(YAML_PATHS)
 
 format:

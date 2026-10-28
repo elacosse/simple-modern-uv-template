@@ -52,7 +52,7 @@ dev = [
     "pytest-cov>=5.0.0",
     "ruff>=0.11.0",
     "codespell>=2.4.1",
-    "ty>=0.0.65",
+    "ty>=0.0.76",
     "yamllint>=1.36.2",
     "pre-commit>=3.7.1",
 ]
@@ -84,7 +84,7 @@ bump = true
 
 [tool.uv]
 # Keep local development aligned with the CI version and its security checks.
-required-version = ">=0.12.1"
+required-version = ">=0.12.3"
 
 [tool.hatch.build.targets.wheel]
 # The source location for the package.
@@ -112,30 +112,9 @@ select = [
     "UP", # https://docs.astral.sh/ruff/rules/#pyupgrade-up
     "B", # https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     "I", # https://docs.astral.sh/ruff/rules/#isort-i
-    # Other possibilities:
-    # "D" # https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    # "Q" # https://docs.astral.sh/ruff/rules/#flake8-quotes-q
-    # "COM" # https://docs.astral.sh/ruff/rules/#flake8-commas-com
-    # "SIM", # https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
-
 ]
 ignore = [
     "E501", # https://docs.astral.sh/ruff/rules/line-too-long/
-    # We use both ruff formatter and linter so some rules should always be disabled.
-    # See: https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
-    "W191", # https://docs.astral.sh/ruff/rules/tab-indentation/
-    "E111", # https://docs.astral.sh/ruff/rules/indentation-with-invalid-multiple/
-    "E114", # https://docs.astral.sh/ruff/rules/indentation-with-invalid-multiple-comment/
-    "E117", # https://docs.astral.sh/ruff/rules/over-indented/
-    "D206", # https://docs.astral.sh/ruff/rules/docstring-tab-indentation/
-    "D300", # https://docs.astral.sh/ruff/rules/triple-single-quotes/
-    "Q000", # https://docs.astral.sh/ruff/rules/bad-quotes-inline-string/
-    "Q001", # https://docs.astral.sh/ruff/rules/bad-quotes-multiline-string/
-    "Q002", # https://docs.astral.sh/ruff/rules/bad-quotes-docstring/
-    "Q003", # https://docs.astral.sh/ruff/rules/avoidable-escaped-quote/
-    "COM812", # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
-    "COM819", # https://docs.astral.sh/ruff/rules/prohibited-trailing-comma/
-    "ISC002", # https://docs.astral.sh/ruff/rules/multi-line-implicit-string-concatenation/
 ]
 
 # ty is Astral's fast type checker and language server.
@@ -144,15 +123,7 @@ ignore = [
 # This is part of ty's recommended stricter configuration.
 missing-type-argument = "error"
 
-[tool.yamllint]
-# https://github.com/adrienverge/yamllint
-max-line-length = 120
-
-[tool.codespell]
-# ignore-words-list = "foo,bar"
-# skip = "foo.py,bar.py"
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "--cov=changeme --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=100"
+addopts = "--cov=changeme --cov-branch --cov-report=term-missing --cov-fail-under=100"
