@@ -56,6 +56,10 @@ dev = [
     "yamllint>=1.36.2",
     "pre-commit>=3.7.1",
 ]
+build = [
+    "hatchling==1.30.1",
+    "uv-dynamic-versioning==0.14.0",
+]
 
 [project.scripts]
 # Add script entry points here.
@@ -81,10 +85,6 @@ source = "uv-dynamic-versioning"
 vcs = "git"
 style = "pep440"
 bump = true
-
-[tool.uv]
-# Keep local development aligned with the CI version and its security checks.
-required-version = ">=0.12.3"
 
 [tool.hatch.build.targets.wheel]
 # The source location for the package.

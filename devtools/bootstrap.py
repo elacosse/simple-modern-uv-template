@@ -102,9 +102,10 @@ def configure_project(root: Path, config: ProjectConfig, *, update_lock: bool = 
     )
     _require_markers(
         root / "README.md",
-        (f"{PLACEHOLDER}/{PLACEHOLDER}", PLACEHOLDER, TEMPLATE_START, TEMPLATE_END),
+        (PLACEHOLDER, TEMPLATE_START, TEMPLATE_END),
     )
     _require_markers(root / "development.md", (f"{PLACEHOLDER}/{PLACEHOLDER}",))
+    _require_markers(root / "AGENTS.md", (f"src/{PLACEHOLDER}",))
     _require_markers(root / "LICENSE", (f"Copyright (c) 2026 {PLACEHOLDER}",))
     _require_markers(
         root / "tests" / f"test_{PLACEHOLDER}.py",
@@ -117,7 +118,7 @@ def configure_project(root: Path, config: ProjectConfig, *, update_lock: bool = 
     _require_markers(root / "src" / PLACEHOLDER / "__init__.py", (f"from .{PLACEHOLDER} import",))
     _require_markers(root / ".github" / "workflows" / "publish.yml", (f"https://pypi.org/p/{PLACEHOLDER}",))
     _require_markers(
-        root / ".github" / "workflows" / "ci.yml",
+        root / ".github" / "ci.yml",
         (
             "name: Quality and template smoke test",
             "\n      - name: Smoke-test a configured project\n        run: make template-test\n",
@@ -153,7 +154,6 @@ def configure_project(root: Path, config: ProjectConfig, *, update_lock: bool = 
     _replace(
         root / "README.md",
         [
-            (f"{PLACEHOLDER}/{PLACEHOLDER}", f"{config.github_org}/{config.project_name}"),
             (PLACEHOLDER, config.project_name),
         ],
     )
@@ -173,6 +173,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         root / "development.md",
         [(f"{PLACEHOLDER}/{PLACEHOLDER}", f"{config.github_org}/{config.project_name}")],
     )
+    _replace(root / "AGENTS.md", [(f"src/{PLACEHOLDER}", f"src/{config.package_module}")])
     _replace(
         root / "LICENSE",
         [(f"Copyright (c) 2026 {PLACEHOLDER}", f"Copyright (c) {config.copyright_year} {config.author_name}")],
@@ -194,7 +195,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
         [(f"https://pypi.org/p/{PLACEHOLDER}", f"https://pypi.org/p/{config.project_name}")],
     )
     _replace(
-        root / ".github" / "workflows" / "ci.yml",
+        root / ".github" / "ci.yml",
         [
             ("name: Quality and template smoke test", "name: Quality checks"),
             ("\n      - name: Smoke-test a configured project\n        run: make template-test\n", ""),

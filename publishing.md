@@ -45,7 +45,8 @@ For the purposes of this example replace OWNER and PROJECT with the right values
 
    - Go to your GitHub project page, then click on Actions tab.
 
-   - Confirm all tests are passing in the last CI workflow.
+   - Run `make check` and confirm all tests pass. If you enabled CI, run its workflow
+     from the Actions tab as well.
      (If you want, you can even publish this template when it's empty as just a stub
      project, to try all this out.)
 

@@ -1,12 +1,15 @@
 # Makefile for easy development workflows.
-# GitHub Actions call uv directly.
+# The optional CI workflow uses the same checks.
 
 .DEFAULT_GOAL := default
+
+UV_CONFIG_FILE := $(CURDIR)/uv.toml
+export UV_CONFIG_FILE
 
 .PHONY: default setup install check lint format test template-test upgrade build clean
 
 PYTHON_PATHS := src tests devtools
-DOC_PATHS := README.md agent-skills.md CHANGELOG.md development.md installation.md publishing.md
+DOC_PATHS := README.md AGENTS.md agent-skills.md CHANGELOG.md development.md installation.md publishing.md
 YAML_PATHS := .github openspec $(wildcard .copier-answers.yml) .yamllint.yaml
 
 default: check
@@ -42,7 +45,8 @@ upgrade:
 	uv sync
 
 build:
-	uv build
+	uv sync --locked --group build
+	uv build --no-build-isolation
 
 clean:
 	-rm -rf dist/

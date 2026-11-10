@@ -19,9 +19,9 @@ The command renames the package, updates project metadata and documentation, and
 `uv.lock`.
 
 Then run `make setup` to install dependencies and Git hooks, followed by `make check`.
+CI is disabled by default; see [development.md](development.md) to enable it.
 <!-- template-setup:end -->
 
-[![CI](https://github.com/changeme/changeme/actions/workflows/ci.yml/badge.svg)](https://github.com/changeme/changeme/actions/workflows/ci.yml)
 [![PyPI](https://img.shields.io/pypi/v/changeme.svg)](https://pypi.org/project/changeme/)
 
 A modern Python project template with `uv`, `pre-commit`, and `pytest`.

@@ -1,10 +1,10 @@
 name: CI
 
 on:
-  push:
-    branches: ["main", "master"]
-  pull_request:
-    branches: ["main", "master"]
+  workflow_dispatch:
+
+env:
+  UV_CONFIG_FILE: ${{ github.workspace }}/uv.toml
 
 permissions:
   contents: read
@@ -136,4 +136,4 @@ jobs:
           python-version: "3.14"
 
       - name: Build package
-        run: uv build
+        run: make build

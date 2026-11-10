@@ -20,10 +20,10 @@ addopts = "--cov={placeholder}"
 <!-- template-setup:start -->
 setup instructions
 <!-- template-setup:end -->
-https://github.com/{placeholder}/{placeholder}
 pip install {placeholder}
 """,
         "development.md": f"https://github.com/{placeholder}/{placeholder}",
+        "AGENTS.md": f"Application code lives in src/{placeholder}.",
         "CHANGELOG.md": "template history",
         "LICENSE": f"Copyright (c) 2026 {placeholder}",
         ".copier-answers.yml": f"""package_author_email: {placeholder}@example.com
@@ -38,7 +38,7 @@ patch("{placeholder}.{placeholder}.load_dotenv")
 argv = ["{placeholder}", "--help"]
 ''',
         ".github/workflows/publish.yml": f"https://pypi.org/p/{placeholder}",
-        ".github/workflows/ci.yml": """name: Quality and template smoke test
+        ".github/ci.yml": """name: Quality and template smoke test
 
       - name: Smoke-test a configured project
         run: make template-test
@@ -79,6 +79,7 @@ def test_configure_project(tmp_path: Path) -> None:
     assert (tmp_path / "tests/test_acme_tool.py").is_file()
     assert 'name = "acme-tool"' in (tmp_path / "pyproject.toml").read_text()
     assert "--cov=acme_tool" in (tmp_path / "pyproject.toml").read_text()
+    assert "src/acme_tool" in (tmp_path / "AGENTS.md").read_text()
     assert "template-setup" not in (tmp_path / "README.md").read_text()
     assert "template history" not in (tmp_path / "CHANGELOG.md").read_text()
     assert not (tmp_path / ".copier-answers.yml").exists()

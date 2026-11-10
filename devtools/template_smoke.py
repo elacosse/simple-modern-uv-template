@@ -33,6 +33,9 @@ def _ignore(directory: str, names: list[str]) -> set[str]:
 def _run(command: list[str], cwd: Path) -> None:
     environment = os.environ.copy()
     environment.pop("VIRTUAL_ENV", None)
+    environment.pop("UV_CONFIG_FILE", None)
+    if (cwd / "uv.toml").is_file():
+        environment["UV_CONFIG_FILE"] = str(cwd / "uv.toml")
     subprocess.run(command, cwd=cwd, check=True, env=environment)
 
 
@@ -71,7 +74,8 @@ def main() -> None:
                 raise RuntimeError(f"OpenSpec integration is missing: {relative_path}")
 
         output = project / "build-output"
-        _run(["uv", "build", "--out-dir", str(output)], project)
+        _run(["uv", "sync", "--locked", "--group", "build"], project)
+        _run(["uv", "build", "--no-build-isolation", "--out-dir", str(output)], project)
         wheel = next(output.glob("*.whl"))
         installed = ["uv", "run", "--isolated", "--no-project", "--with", str(wheel)]
         _run([*installed, "sample-project", "--name", "Template"], Path(temporary_directory))

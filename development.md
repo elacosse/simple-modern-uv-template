@@ -13,8 +13,11 @@ fork will make it easier to contribute) and
 
 ## Basic Developer Workflows
 
-The `Makefile` offers shortcuts to `uv` commands for developer convenience. GitHub
-Actions use the same checks where practical.
+The `Makefile` offers shortcuts to `uv` commands for developer convenience. CI is
+disabled by default. To enable the provided CI workflow, move `.github/ci.yml` to
+`.github/workflows/ci.yml`. It can then be started manually from the GitHub Actions
+tab; add push and pull request triggers if automatic runs are desired. Publishing a
+GitHub release independently starts the release workflow.
 
 ```shell
 # First, install all dependencies and set up your virtual environment.
@@ -28,7 +31,7 @@ make setup
 # Run all read-only checks and tests:
 make check
 
-# Build wheel:
+# Build a wheel and source distribution with locked build dependencies:
 make build
 
 # Read-only linting, formatting, spelling, typing, and YAML checks:
@@ -72,6 +75,14 @@ source .venv/bin/activate
 ```
 
 See [uv docs](https://docs.astral.sh/uv/) for details.
+
+The checked-in `uv.toml` sets a 14-day cooling-off period for dependency resolution.
+The Makefile uses this configuration explicitly; for direct commands, set
+`UV_CONFIG_FILE=uv.toml` to prevent user-level uv settings from being merged. To
+resolve an urgent update, override the period for that command with
+`--exclude-newer` and an explicit cutoff timestamp. Lockfile changes should be
+reviewed and committed. Building uses the locked `build` dependency group with
+build isolation disabled so the installed backend dependencies match the lockfile.
 
 ## Pre-commit Hooks
 

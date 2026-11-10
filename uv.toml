@@ -1,0 +1,3 @@
+# Keep dependency resolution consistent across machines and delay new releases.
+required-version = ">=0.12.3"
+exclude-newer = "14 days"
