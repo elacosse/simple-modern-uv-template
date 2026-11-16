@@ -6,7 +6,7 @@
 UV_CONFIG_FILE := $(CURDIR)/uv.toml
 export UV_CONFIG_FILE
 
-.PHONY: default setup install check lint format test template-test upgrade build clean
+.PHONY: default setup install check lint format test template-test upgrade build clean verify-file
 
 PYTHON_PATHS := src tests devtools
 DOC_PATHS := README.md AGENTS.md agent-skills.md CHANGELOG.md development.md installation.md publishing.md
@@ -36,6 +36,10 @@ test:
 	uv run pytest
 
 check: lint test
+
+verify-file:
+	@test -n "$(FILE)" || (echo "Usage: make verify-file FILE=path/to/file.py" >&2; exit 2)
+	./devtools/verify_file.sh "$(FILE)"
 
 template-test:
 	uv run python devtools/template_smoke.py
